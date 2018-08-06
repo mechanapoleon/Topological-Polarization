@@ -1,0 +1,36 @@
+program ionic_crystal
+implicit none
+real, allocatable, dimension(:,:) :: crystal    ! array bidimensionale, la prima riga segna la posizione del sito, il secondo la carica +1/-1
+real, allocatable, dimension(:) :: reciprocal   ! reciprocal lattice position
+real:: a, b                                     ! a = passo reticolare
+integer:: i,k                                   ! dummy index ciclo do 
+integer:: N                                     ! numero di celle
+
+read*, N
+allocate(crystal(N,2))
+allocate(reciprocal(N))
+a=5
+
+
+do i=1,N
+   crystal(i,1)=a/4 + (i-1) * a/2
+   crystal(i,2)=1
+   if (mod(i,2)==0) then
+      crystal(i,2)= -1
+      else
+   end if
+end do                                             !inizializzazione cristallo
+   
+!ora bisogna andare a sfruttare il teorema di bloch per scrivere l'hamiltoniana del sistema nello spazio reciproco
+
+do i=1,N
+   reciprocal(i) = crystal(i,1) *  2 * acos(-1.0) / a    
+end do
+
+do i=1,N
+   write(unit=10, fmt=*) crystal(i,1), crystal(i,2)
+end do
+
+end program
+
+
