@@ -26,3 +26,9 @@ carpos[sites_, hamiltonian_] :=  Inverse[vects[hamiltonian]] DiagonalMatrix[aa*R
 
 (* Polarization Operator *)
 polarization[sites_,hamiltonian_] := (charge/(2 sites*aa))* ( Sum[i*aa, {i, 0, sites - 1}] - (Conjugate[groundstate[hamiltonian,  sites]].  (DiagonalMatrix[aa*Range[0, (sites - 1), 1]] .groundstate[hamiltonian,sites]) )) ;
+
+(* Gaussian *)
+gauss[\[Alpha]_,\[Epsilon]_,e_] := ( \[Alpha] / \[Pi] ) Exp[ - \[Alpha] (e - \[Epsilon])^2]; (* \[Alpha] inverse of the lenght, \[Epsilon] center of the gaussian, e variable *)
+
+(* Density of State *)
+dens[\[Alpha]_, \[Epsilon]_, energy_, sites_] :=  2/(sites*aa) Total[ gauss[\[Alpha], \[Epsilon], energy]];
