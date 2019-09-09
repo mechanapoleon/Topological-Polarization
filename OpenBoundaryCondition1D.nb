@@ -21,7 +21,8 @@ negenergy[hamiltonian_] := Select[energy[hamiltonian], Negative];
 negvects[hamiltonian_] := Pick[vects[hamiltonian], Negative[energy[hamiltonian]]];
 groundstate[hamiltonian_, sites_] := Sqrt[2] Total[negvects[hamiltonian]]/Sqrt[sites];
 
-(* Reciprocal Space *)
-(* Discrete Fourier Transform of each eigenstate to obtain \[Kappa] quantum number *)
-\[Kappa]vals[vects_] := 
-  Map[Flatten[Position[Abs[Chop[Fourier[#]]], Except[0, _?NumberQ]] - 1] &, vects, 1]; 
+(* Position Operator *)
+carpos[sites_, hamiltonian_] :=  Inverse[vects[hamiltonian]] DiagonalMatrix[aa*Range[0, (sites - 1), 1]] vects[hamiltonian];
+
+(* Polarization Operator *)
+polarization[sites_,hamiltonian_] := (charge/(2 sites*aa))* ( Sum[i*aa, {i, 0, sites - 1}] - (Conjugate[groundstate[hamiltonian,  sites]].  (DiagonalMatrix[aa*Range[0, (sites - 1), 1]] .groundstate[hamiltonian,sites]) )) ;
