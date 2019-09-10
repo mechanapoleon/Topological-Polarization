@@ -1,4 +1,4 @@
-(* Parameter *)
+(* PARAMETERS *)
 charge     = 1.0;  (* charge *)
 aa         = 10;   (* lattice parameter *)
 \[Epsilon] = 1;    (* energy per site *)
@@ -32,3 +32,8 @@ gauss[\[Alpha]_,\[Epsilon]_,e_] := ( \[Alpha] / \[Pi] ) Exp[ - \[Alpha] (e - \[E
 
 (* Density of State *)
 dens[\[Alpha]_, \[Epsilon]_, energy_, sites_] :=  2/(sites*aa) Total[ gauss[\[Alpha], \[Epsilon], energy]];
+
+
+(* PLOTS *)
+
+Manipulate[ListPlot[Table[polarization2[i, hamchainOBCtdep[i, \[Tau]]]/(0.5*i), {i, 2, 100,2}], AxesOrigin -> {0, 0}, Frame -> True, FrameLabel -> {Style["Number of Unit Cells"], Style["Polarization per Unit Cell"]}], {{\[Tau], 0,"t"}, 0, -1, -0.1, Appearance -> "Labeled"},TrackedSymbols :> {\[Tau]}]
