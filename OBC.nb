@@ -34,6 +34,12 @@ gauss[\[Alpha]_,\[Epsilon]_,e_] := ( \[Alpha] / \[Pi] ) Exp[ - \[Alpha] (e - \[E
 dens[\[Alpha]_, \[Epsilon]_, energy_, sites_] :=  2/(sites*aa) Total[ gauss[\[Alpha], \[Epsilon], energy]];
 
 
+
 (* PLOTS *)
 
+(* Polarization per Unit Cell *)
 Manipulate[ListPlot[Table[polarization2[i, hamchainOBCtdep[i, \[Tau]]]/(0.5*i), {i, 2, 100,2}], AxesOrigin -> {0, 0}, Frame -> True, FrameLabel -> {Style["Number of Unit Cells"], Style["Polarization per Unit Cell"]}], {{\[Tau], 0,"t"}, 0, -1, -0.1, Appearance -> "Labeled"},TrackedSymbols :> {\[Tau]}]
+
+(* Density of States *)
+Manipulate[{dos = Total[gauss[\[Alpha], energy[hamchainOBCtdep[sites, t]], x]]/sites; Plot[dos, {x, -5, 5}, ImageSize -> {400, 400}]}, {{sites, 2, "N"}, 2, 100, 2, Appearance -> "Labeled"}, {{\[Alpha], 2, "\[Alpha]"}, 1,10, 0.5, Appearance -> "Labeled"}, {{t, 0, "t"}, 0, -1, -0.01,Appearance -> "Labeled"}, TrackedSymbols :> {sites, \[Alpha], t}]
+
