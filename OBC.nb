@@ -7,8 +7,12 @@ t          = -1.0; (* hopping energy *)
 
 (* FUNCTIONS *)
 
-(* Hamiltonians with periodic boundary conditions *)
-hamchainOBC[sites_]:=SparseArray[Which[sites==1,{{i_,i_}}-> + \[Epsilon]}, sites == 2, {{1,1}-> + \[Epsilon], {2,2}->-\[Epsilon], {1, sites} -> t, {sites, 1} -> t},sites > 2, {{i_?OddQ, i_?OddQ} -> \[Epsilon], {i_?EvenQ, i_?EvenQ} -> -\[Epsilon], {i_, j_} /; Or[i == (j + 1), i == (j - 1), j == (i + 1), j == (i - 1)] -> t}], {sites, sites}];
+(* Hamiltonian with open boundary conditions *)
+hamchainOBC[sites_]:=SparseArray[Which[sites==1,{{i_,i_}}-> + \[Epsilon]}, sites == 2, {{1,1}-> + \[Epsilon], {2,2}->-\[Epsilon], {1, sites} -> t, {sites, 1} -> t},sites > 2, {{i_?OddQ, i_?OddQ} -> \[Epsilon], {i_?EvenQ, i_?EvenQ} -> -\[Epsilon], {i_, j_} /; Or[i == (j + 1), i == (j - 1), j == (i + 1), j == (i - 1)] -> t}], {sites, sites}]
+
+(* Hamiltonian with open boundary conditions, with the hopping parameter t as an input *)
+hamchainOBCtdep[sites_, t_] := SparseArray[  Which[sites == 1, {{i_, i_} -> +\[Epsilon]}, sites == 2, {{1, 1} -> +\[Epsilon], {2, 2} -> -\[Epsilon], {1, sites} -> t, {sites, 1} -> t}, sites > 2, {{i_?OddQ, i_?OddQ} -> \[Epsilon], {i_?EvenQ, i_?EvenQ} -> -\[Epsilon], {i_, j_} /; Or[i == (j + 1), i == (j - 1), j == (i + 1), j == (i - 1)] ->  t}], {sites, sites}]
+
 
 (* Energy Eigenvalues *)
 energy[hamiltonian_] := Eigensystem[hamiltonian][[1]];
