@@ -15,14 +15,25 @@ We have three objectives:
 
 
 ## Theory
-We are considering a one dimensional linear lattice, with the 
+We are considering a one dimensional linear lattice, with lattice parameter a. The lattice is made of alternating anions and cations, and we are using a Tight Binding model in order to find the relevant quantities of the system. In brief, the lattice hamiltonian is:
+
+
 
 ## OBC
-In t
+In the OBC case we work with localized orbital in position space, the Wannier orbitals. In this program the choice of Wannier orbital is a gaussian. The polarization is easy in this case, it is just straightforwardly the classical operator:
+
+The results we get are:
+
+Also the density of states is interisting:
 
 ## Disordered OBC
+As we mentioned, for the disordered case we kept the position of the sites fixed but we varied the interaction strenght: the ratio between the on site energy and the hopping energy ε/t is chosen with a uniform random distribution in the interval (0,5). 
+
+Again we have Wannier orbitals, and we compute the same quantities as before.
 
 ## PBC
+For the periodic boundary conditions we get to the interesting part, which gives name to the repository: the polarization is in fact topological, and we can compute it using the Berry phase.
+
 
 ## References
 For the Tight Binding Model:
