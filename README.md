@@ -4,11 +4,11 @@ Study of the polarization of a linear polymer in a Tight Binding Model, with dis
 Main code is a Mathematica Notebook, but I have also written some routine in FORTRAN in case I need some faster computation.
 
 
-## Problem 
+## The Physical Problem
 We want to compute the polarization of a polymer chain in a tight binding model. The chain is made of an anion and a cation.
 For the tight binding model we are consider the on site energy to be + ε and - ε, for the cation and anion respectively. The hopping energy is regulated by a parameter t.
 
-We have three objectives:
+We have three different realization of this physical system
 - OBC case: Study the polarization for N cells in open boundary conditions (OBC). We know that for large we should get  P = ±1/2, but we want to know the power law at which it converges.
 - Disordered OBC case: same as before, but with the ratio between on site and hopping energy to be taken with a uniform random distribution. We should also look at the energy spectrum: do we get an insulator band energy?
 - PBC case: This gets interesting, the polarization is topological and we can compute it by using the Berry phase.
@@ -24,7 +24,7 @@ In the OBC case we work with localized orbital in position space, the Wannier or
 
 The results we get are:
 
-Also the density of states is interisting:
+Also the density of states is interesting:
 
 ## Disordered OBC
 As we mentioned, for the disordered case we kept the position of the sites fixed but we varied the interaction strenght: the ratio between the on site energy and the hopping energy ε/t is chosen with a uniform random distribution in the interval (0,5). 
