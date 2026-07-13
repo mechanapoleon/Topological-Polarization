@@ -6,7 +6,7 @@ implicit none
  REAL (kind=8), allocatable, dimension (:) :: WORK
  INTEGER ::  LWORK, INFO
  REAL (kind=8), allocatable, dimension(:) :: W
- integer :: i !dummy index ciclo do
+ integer :: i, k !dummy index cicli do
  real :: DELTA, t , l, dipole !parametri dell'hamiltoniana, lunghezza della cella primitiva, dipolo
  real (kind=8), allocatable, dimension(:) :: groundstate !groundstate dell'hamiltoniana
 
@@ -45,9 +45,11 @@ write(unit=11,fmt=*) A
 
 call dsyev(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, INFO)
 
-groundstate=0                  !definiamo il groundstate su cui vado a calcolare il dipolo
-do i=1,N
-   groundstate(i)= A(i,1)
+groundstate=0                  !densita' elettronica: somma su tutti gli N/2 stati occupati (energia negativa), non solo il piu' basso
+do k=1,N/2
+   do i=1,N
+      groundstate(i)= groundstate(i) + A(i,k)**2
+   end do
 end do
 
 
