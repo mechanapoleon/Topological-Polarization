@@ -1,11 +1,11 @@
 program matrix_diagonalization
 implicit none
- CHARACTER :: JOBZ, UPLO
- INTEGER   :: N, LDA
- REAL (kind=8), allocatable, dimension(:,:) :: A, CarPosE, ZX  !sotto
- REAL (kind=8), allocatable, dimension (:) :: WORK
- INTEGER ::  LWORK, INFO
- REAL (kind=8), allocatable, dimension(:) :: W
+ CHARACTER :: JOBZ
+ INTEGER   :: N, LDZ
+ REAL (kind=8), allocatable, dimension(:,:) :: CarPosE, ZX, Z  !sotto
+ REAL (kind=8), allocatable, dimension (:) :: WORK, D, E
+ INTEGER, allocatable, dimension(:) :: IWORK
+ INTEGER ::  LWORK, LIWORK, INFO
  integer :: i, k !dummy index cicli do
  real :: DELTA, t , l, dipole !parametri dell'hamiltoniana, lunghezza della cella primitiva, dipolo
  real (kind=8), allocatable, dimension(:) :: groundstate !groundstate dell'hamiltoniana
@@ -21,36 +21,35 @@ do N=4,400,2
 
 
 JOBZ = 'V'
-UPLO = 'U' 
-LDA  = N
-LWORK = max(1,3*N-1)
+LDZ  = N
+LWORK  = 1 + 4*N + N*N   ! dstevd, autovettori richiesti (JOBZ='V')
+LIWORK = 3 + 5*N
 
-allocate(A(LDA,N))
-allocate(W(N))
+allocate(D(N))
+allocate(E(max(1,N-1)))
+allocate(Z(LDZ,N))
 allocate(WORK(max(1,LWORK)))
+allocate(IWORK(max(1,LIWORK)))
 allocate(groundstate(N))
 allocate(CarPosE(N,N))
 allocate(ZX(N,N))
-A=0
+
+! l'Hamiltoniana e' gia' tridiagonale (on-site +-Delta, hopping -t primi vicini):
+! la passiamo direttamente a dstevd invece di costruire la matrice piena e usare
+! dsyev, che dovrebbe prima ridurla a tridiagonale internamente (lavoro sprecato)
 do i=1,N
-   A(i,i)= ((-1)**i ) * Delta
-
-   if ( i /= N ) then
-      A(i+1,i)= -t
-      A(i,i+1)= -t
-   else
-   end if
-
+   D(i) = ((-1)**i) * Delta
+end do
+do i=1,N-1
+   E(i) = -t
 end do
 
-write(unit=11,fmt=*) A
-
-call dsyev(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, INFO)
+call dstevd(JOBZ, N, D, E, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO)
 
 groundstate=0                  !densita' elettronica: somma su tutti gli N/2 stati occupati (energia negativa), non solo il piu' basso
 do k=1,N/2
    do i=1,N
-      groundstate(i)= groundstate(i) + A(i,k)**2
+      groundstate(i)= groundstate(i) + Z(i,k)**2
    end do
 end do
 
@@ -84,9 +83,11 @@ write(unit=20,fmt=*) N, dipole, mod(dipole,1.0)
 
 
 
-deallocate(A)
-deallocate(W)
+deallocate(D)
+deallocate(E)
+deallocate(Z)
 deallocate(WORK)
+deallocate(IWORK)
 deallocate(groundstate)
 deallocate(CarPosE)
 deallocate(ZX)
@@ -100,9 +101,9 @@ end do
 
 
 !print*, INFO
-!print*, W
+!print*, D
 !do i=1,n
-!write(unit=12,fmt=*) i, W(i)   !autovalori
+!write(unit=12,fmt=*) i, D(i)   !autovalori
 !end do
 
-end program 
+end program
