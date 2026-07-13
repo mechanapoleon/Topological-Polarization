@@ -2,10 +2,9 @@ program matrix_diagonalization
 implicit none
  CHARACTER :: JOBZ, UPLO
  INTEGER   :: N, LDA
- COMPLEX (kind=8), allocatable, dimension(:,:) :: A, CarPosE, ZX  !sotto
- COMPLEX (kind=8), allocatable, dimension (:) :: WORK
+ REAL (kind=8), allocatable, dimension(:,:) :: A, CarPosE, ZX  !sotto
+ REAL (kind=8), allocatable, dimension (:) :: WORK
  INTEGER ::  LWORK, INFO
- REAL (kind=8), allocatable, dimension(:) :: RWORK
  REAL (kind=8), allocatable, dimension(:) :: W
  integer :: i !dummy index ciclo do
  real :: DELTA, t , l, dipole !parametri dell'hamiltoniana, lunghezza della cella primitiva, dipolo
@@ -22,12 +21,11 @@ N=100
 JOBZ = 'V'
 UPLO = 'U' 
 LDA  = N
-LWORK = max(1,3*(N-1))
+LWORK = max(1,3*N-1)
 
 allocate(A(LDA,N))
 allocate(W(N))
 allocate(WORK(max(1,LWORK)))
-allocate(RWORK(max(1,3*N-2)))
 allocate(groundstate(N))
 allocate(CarPosE(N,N))
 allocate(ZX(N,N))
@@ -45,7 +43,7 @@ end do
 
 write(unit=11,fmt=*) A
 
-call zheev(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, RWORK, INFO)
+call dsyev(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, INFO)
 
 groundstate=0                  !definiamo il groundstate su cui vado a calcolare il dipolo
 do i=1,N

@@ -38,7 +38,7 @@ dens[\[Alpha]_, \[Epsilon]_, energy_, sites_] :=  2/(sites*aa) Total[ gauss[\[Al
 (* PLOTS *)
 
 (* Polarization per Unit Cell *)
-ListPlot[Table[polarization[i, hamchainOBCdisorder[i]/(0.5*i), {i, 2, 100,2}], AxesOrigin -> {0, 0}, Frame -> True, FrameLabel -> {Style["Number of Unit Cells"], Style["Polarization per Unit Cell"]}]
+ListPlot[Table[polarization[i, hamchainOBCdisorder[i]]/(0.5*i), {i, 2, 100, 2}], AxesOrigin -> {0, 0}, Frame -> True, FrameLabel -> {Style["Number of Unit Cells"], Style["Polarization per Unit Cell"]}]
 
 (* Density of States *)
-Manipulate[{dos = Total[gauss[\[Alpha], energy[hamchainOBCtManipulate[{dos = Total[gauss[\[Alpha], energy[hamchainOBCdisorder[sites]], x]]; Plot[dos, {x, -5, 5}, ImageSize -> {400, 400}]}, {{\[Alpha], 2, "\[Alpha]"}, 1, 50, 1, Appearance -> "Labeled"}, {{sites, 2, "sites"}, 2, 200, 2, Appearance -> "Labeled"}, TrackedSymbols :> {\[Alpha], sites}]dep[sites, t]], x]]/sites; Plot[dos, {x, -5, 5}, ImageSize -> {400, 400}]}, {{sites, 2, "N"}, 2, 100, 2, Appearance -> "Labeled"}, {{\[Alpha], 2, "\[Alpha]"}, 1,10, 0.5, Appearance -> "Labeled"}, {{t, 0, "t"}, 0, -1, -0.01,Appearance -> "Labeled"}, TrackedSymbols :> {sites, \[Alpha], t}]
+Manipulate[{dos = Total[gauss[\[Alpha], energy[hamchainOBCdisorder[sites]], x]]; Plot[dos, {x, -5, 5}, ImageSize -> {400, 400}]}, {{\[Alpha], 2, "\[Alpha]"}, 1, 50, 1, Appearance -> "Labeled"}, {{sites, 2, "sites"}, 2, 200, 2, Appearance -> "Labeled"}, TrackedSymbols :> {\[Alpha], sites}]
